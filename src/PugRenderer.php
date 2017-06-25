@@ -17,7 +17,7 @@ class PugRenderer
 
     public function __construct($templatePath = "", $attributes = [])
     {
-        $this->adaptee = new Pug($this->validateDefaultAttributes($attributes));
+        $this->adaptee = new Pug($this->validateDefaultAttributes($templatePath, $attributes));
         $this->templatePath = rtrim($templatePath, '/\\') . '/';
         $this->attributes = $attributes;
     }
@@ -133,7 +133,7 @@ class PugRenderer
         return $this->adaptee->render($this->templatePath . $template, $data);
     }
 
-    private function validateDefaultAttributes(array $attributes)
+    private function validateDefaultAttributes($templatePath, array $attributes)
     {
         $settings = [];
 
