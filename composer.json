@@ -1,0 +1,10 @@
+{
+    "name": "md/pug-slim",
+    "require": {
+        "pug-php/pug": "^2.6",
+        "psr/http-message": "^1.0"
+    },
+    "autoload": {
+        "": "src"
+    }
+}
