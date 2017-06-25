@@ -81,5 +81,5 @@ $pugView->render($response, $template, [
 
 ## References
 
-To learn more about Pug go to [https://pugjs.org](https://pugjs.org)
-Here is an online HTML to Pug converter [https://html2pug.herokuapp.com/](https://html2pug.herokuapp.com/)
+ * To learn more about Pug go to [https://pugjs.org](https://pugjs.org)
+ * Here is an online HTML to Pug converter [https://html2pug.herokuapp.com/](https://html2pug.herokuapp.com/)
