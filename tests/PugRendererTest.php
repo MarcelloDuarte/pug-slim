@@ -44,11 +44,12 @@ class PugRendererTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @expectedException        RuntimeException
+     * @expectedExceptionMessage View cannot render `foo.pug` because the template does not exist
+     */
     public function testTemplateNotFound()
     {
-        self::expectException(RuntimeException::class);
-        self::expectExceptionMessage('View cannot render `foo.pug` because the template does not exist');
-
         $this->pug->fetch('foo.pug');
     }
 
@@ -59,11 +60,12 @@ class PugRendererTest extends AbstractTestCase
         self::assertSame($path, $this->app->getContainer()['templates.path']);
     }
 
+    /**
+     * @expectedException        InvalidArgumentException
+     * @expectedExceptionMessage Duplicate template key found
+     */
     public function testForbiddenKey()
     {
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage('Duplicate template key found');
-
         $this->pug->fetch('foo.pug', [
             'template' => 'bar.pug',
         ]);
