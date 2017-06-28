@@ -15,10 +15,10 @@ class PugRenderer
 {
     private $templatePath;
 
-    public function __construct($templatePath = "", $attributes = [])
+    public function __construct($templatePath = '', $attributes = [])
     {
         $this->adaptee = new Pug($this->validateDefaultAttributes($templatePath, $attributes));
-        $this->templatePath = rtrim($templatePath, '/\\') . '/';
+        $this->setTemplatePath($templatePath);
         $this->attributes = $attributes;
     }
 
@@ -83,9 +83,9 @@ class PugRenderer
      */
     public function setTemplatePath($templatePath)
     {
-        $this->templatePath = rtrim($templatePath, '/\\') . '/';
+        $this->templatePath = rtrim($templatePath, '/\\') . DIRECTORY_SEPARATOR;
     }
-    
+
     /**
      * Renders a template
      *
@@ -104,6 +104,7 @@ class PugRenderer
     {
         $output = $this->fetch($template, $data);
         $response->getBody()->write($output);
+
         return $response;
     }
 
@@ -121,33 +122,35 @@ class PugRenderer
     public function fetch($template, array $data = [])
     {
         if (isset($data['template'])) {
-            throw new \InvalidArgumentException("Duplicate template key found");
+            throw new \InvalidArgumentException('Duplicate template key found');
         }
 
-        if (!is_file($this->templatePath . $template)) {
+        $path = $this->templatePath . ltrim($template, '/\\');
+
+        if (!is_file($path)) {
             throw new \RuntimeException("View cannot render `$template` because the template does not exist");
         }
 
         $data = array_merge($this->attributes, $data);
 
-        return $this->adaptee->render($this->templatePath . $template, $data);
+        return $this->adaptee->render($path, $data);
     }
 
     private function validateDefaultAttributes($templatePath, array $attributes)
     {
         $settings = [];
 
-        if (isset($attributes["cache"])) {
-            $settings["cache"] = $attributes["cache"];
+        if (isset($attributes['cache'])) {
+            $settings['cache'] = $attributes['cache'];
         }
         
-        if (isset($attributes["upToDateCheck"])) {
-            $settings["upToDateCheck"] = $attributes["upToDateCheck"];
+        if (isset($attributes['upToDateCheck'])) {
+            $settings['upToDateCheck'] = $attributes['upToDateCheck'];
         }
         
-        $settings["extension"] = isset($attributes["extension"]) ? $attributes["extension"] : ".pug";
-        $settings["basedir"] = $templatePath;
-        $settings["expressionLanguage"] = isset($attributes["expressionLanguage"]) ? $attributes["expressionLanguage"] : "php";
+        $settings['extension'] = isset($attributes['extension']) ? $attributes['extension'] : '.pug';
+        $settings['basedir'] = $templatePath;
+        $settings['expressionLanguage'] = isset($attributes['expressionLanguage']) ? $attributes['expressionLanguage'] : 'php';
 
         return $settings;
     }
